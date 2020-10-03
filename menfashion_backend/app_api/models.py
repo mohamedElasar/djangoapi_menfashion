@@ -1,5 +1,19 @@
 from django.db import models
 from django.contrib.auth import get_user_model,authenticate
+import uuid
+import os
+
+
+
+def recipe_image_file_path(instance,filename):
+    """generate path for new image"""
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+
+    return os.path.join('uploads/shop/',filename)
+
+
+
 
 
 # Create your models here.
@@ -14,10 +28,11 @@ class Category(models.Model):
 
 class Shop (models.Model):
         """shop model"""
+        owner = models.OneToOneField(get_user_model(),related_name='shop_owner', on_delete=models. CASCADE)
         name = models.CharField(max_length=255)
         categories = models.ManyToManyField(Category)
         address = models.CharField(max_length=400)
-        image_url = models.ImageField(upload_to="")
+        image_url = models.ImageField(null=True,upload_to='')
         description = models.TextField(max_length=400)
 
 
@@ -58,9 +73,9 @@ class Adv (models.Model):
 
 
 
-class ShopOwner(models.Model):
-        """shop owner model """
-        user = models.ForeignKey(get_user_model(),related_name='owner',on_delete=models.CASCADE)
-        shop = models.OneToOneField(Shop,related_name="owner_shop",on_delete=models. CASCADE)
-        def __str__(self):
-            return self.user.name
+# class ShopOwner(models.Model):
+#         """shop owner model """
+#         user = models.ForeignKey(get_user_model(),related_name='shopowner',on_delete=models.CASCADE)
+#         shop = models.OneToOneField(Shop,related_name="owner_shop",on_delete=models. CASCADE)
+#         def __str__(self):
+#             return self.user.name

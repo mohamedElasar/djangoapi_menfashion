@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets, mixins, status
 
-from app_api.models import Category,Shop,Adv,ShopItem,FavItems
+from app_api.models import Category,Shop,Adv,ShopItem,FavItems,ShopItem
 
 from app_api import serializers
 from rest_framework.permissions import IsAuthenticated  # <-- Here
@@ -94,3 +94,28 @@ class Adv_ViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     """Manage categories in the database"""
     queryset = Adv.objects.all()
     serializer_class = serializers.Ad_Serializer
+
+
+
+class AddShop_ViewSet(viewsets.GenericViewSet,mixins.CreateModelMixin,mixins.UpdateModelMixin):
+    """Manage shop adding and updating in the database"""
+    serializer_class = serializers.ShopAdd_Serializer
+    permission_classes = (IsAuthenticated,)             # <-- And here
+
+    queryset = Shop.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+
+class AddItem_ViewSet(viewsets.GenericViewSet,mixins.CreateModelMixin,mixins.UpdateModelMixin):
+    """Manage shop adding and updating in the database"""
+    serializer_class = serializers.CreateItems_Serializer
+    permission_classes = (IsAuthenticated,)             # <-- And here
+
+    queryset = ShopItem.objects.all()
+
+    def perform_create(self, serializer):
+        myshop = Shop.objects.filter(owner=self.request.user).first()
+        serializer.save(shop=myshop)

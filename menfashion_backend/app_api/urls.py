@@ -9,6 +9,8 @@ router.register('categories', views.Cat_ViewSet)
 router.register('shops', views.Shop_ViewSet)
 router.register('adv', views.Adv_ViewSet)
 router.register('favorits', views.Favs_ViewSet)
+router.register('shops/add', views.AddShop_ViewSet)
+router.register('items/add', views.AddItem_ViewSet)
 
 
 

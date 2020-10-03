@@ -4,7 +4,7 @@ from app_api import models
 admin.site.register(models.Category)
 admin.site.register(models.Adv)
 admin.site.register(models.FavItems)
-admin.site.register(models.ShopOwner)
+# admin.site.register(models.ShopOwner)
 
 
 
@@ -15,7 +15,7 @@ class ItemsInline(admin.StackedInline):
 
 class ShopAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,{'fields': ['name','categories','address','image_url','description']}),
+        (None,{'fields': ['owner','name','categories','address','image_url','description']}),
     ]
     inlines = [ItemsInline]
 

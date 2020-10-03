@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from app_api.models import Category,Shop,Adv,ShopItem,FavItems , ShopOwner
+from app_api.models import Category,Shop,Adv,ShopItem,FavItems
 
 
 class Cat_Serializer(serializers.ModelSerializer):
@@ -19,6 +19,7 @@ class Items_Serializer(serializers.ModelSerializer):
         class Meta:
             model = ShopItem
             fields = ('name','price','description','image_url','category_item')
+            read_only_fields = ('id',)
 
 
 
@@ -41,16 +42,26 @@ class Ad_Serializer(serializers.ModelSerializer):
 
 
 class FavItems_Serializer(serializers.ModelSerializer):
-    # shops = Shop_Serializer()
     class Meta:
         model = FavItems
         fields = ('id','user', 'shops')
         read_only_fields = ('id',)
 
 
-class ShopOwner_Serializer(serializers.ModelSerializer):
-    # shops = Shop_Serializer()
+
+class ShopAdd_Serializer(serializers.ModelSerializer):
+    """Serializer for Shops"""
     class Meta:
-        model = FavItems
-        fields = '__all__'
+        model = Shop
+        fields = ('id','name','categories','address','image_url','description')
         read_only_fields = ('id',)
+
+
+
+class CreateItems_Serializer(serializers.ModelSerializer):
+        """Serializer for Shop items"""
+
+        class Meta:
+            model = ShopItem
+            fields = ('name','price','description','image_url','category_item')
+            read_only_fields = ('id',)
